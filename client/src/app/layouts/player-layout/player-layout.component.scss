@@ -1,0 +1,134 @@
+@use 'variables' as theme;
+
+.layout-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: theme.$arise-dark-blue;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid theme.$arise-electric-blue;
+}
+
+.brand {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(theme.$arise-electric-blue, 0.3);
+  h2 { margin: 0; font-size: 2.5rem; letter-spacing: 4px; }
+}
+
+.nav-menu {
+  flex: 1;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  
+  .nav-item {
+    padding: 15px 25px;
+    color: theme.$arise-text;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+    
+    &:hover { background: rgba(0, 212, 255, 0.1); color: theme.$arise-electric-blue; }
+    &.active { border-left-color: theme.$arise-electric-blue; background: rgba(0, 212, 255, 0.2); color: theme.$arise-electric-blue; text-shadow: 0 0 5px theme.$arise-electric-blue; }
+    &.admin-link { color: theme.$arise-gold; }
+  }
+}
+
+.divider { height: 1px; background: rgba(255,255,255,0.1); margin: 15px 20px; }
+
+.logout-container {
+  padding: 20px;
+  .btn-logout {
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid theme.$arise-red;
+    color: theme.$arise-red;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover { background: rgba(255, 23, 68, 0.2); box-shadow: 0 0 10px theme.$arise-red; }
+  }
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: theme.$arise-black;
+}
+
+.topbar {
+  height: 70px;
+  background-color: rgba(theme.$arise-dark-blue, 0.8);
+  border-bottom: 1px solid rgba(theme.$arise-electric-blue, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  
+  .player-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    
+    .details {
+      display: flex;
+      flex-direction: column;
+      .name { font-size: 1.2rem; font-weight: bold; color: theme.$arise-electric-blue; }
+      .level { font-size: 0.9rem; color: theme.$arise-text-secondary; }
+    }
+  }
+  
+  .status-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 300px;
+    
+    .hp-bar-container, .mp-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      
+      span { width: 40px; text-align: right; }
+      
+      .bar {
+        flex: 1;
+        height: 8px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 4px;
+        overflow: hidden;
+        
+        .fill {
+          height: 100%;
+          transition: width 0.3s;
+          &.hp { background: theme.$arise-red; box-shadow: 0 0 5px theme.$arise-red; }
+          &.mp { background: theme.$arise-electric-blue; box-shadow: 0 0 5px theme.$arise-electric-blue; }
+        }
+      }
+    }
+  }
+  
+  .gold-info {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: theme.$arise-gold;
+    text-shadow: 0 0 5px theme.$arise-gold;
+  }
+}
+
+.content-area {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}

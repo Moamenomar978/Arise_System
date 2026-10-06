@@ -1,0 +1,33 @@
+<div class="auth-container">
+  <div class="auth-card system-border-glow">
+    <div class="header">
+      <h2 class="system-text-glow">[SYSTEM]</h2>
+      <h3>HUNTER REGISTRATION PROTOCOL</h3>
+    </div>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>HUNTER NAME</label>
+        <input type="text" formControlName="hunterName" class="system-input" placeholder="Enter Hunter Name">
+      </div>
+
+      <div class="form-group">
+        <label>EMAIL</label>
+        <input type="email" formControlName="email" class="system-input" placeholder="Enter Email">
+      </div>
+      
+      <div class="form-group">
+        <label>PASSWORD</label>
+        <input type="password" formControlName="password" class="system-input" placeholder="Enter Password">
+      </div>
+      
+      <button type="submit" [disabled]="registerForm.invalid" class="btn-submit">
+        REGISTER
+      </button>
+    </form>
+    
+    <div class="footer-links">
+      <a routerLink="../login">Return to Authentication</a>
+    </div>
+  </div>
+</div>

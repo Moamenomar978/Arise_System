@@ -1,0 +1,42 @@
+<div class="overview-container" *ngIf="playerService.player() as player">
+  <div class="header-card card-panel">
+    <div class="player-identity">
+      <app-rank-badge [rank]="player.rank"></app-rank-badge>
+      <div class="name-class">
+        <h2>SUNG JIN-WOO</h2>
+        <span class="class-title">Shadow Monarch</span>
+      </div>
+    </div>
+    
+    <app-xp-progress [xp]="player.xp" [maxXp]="player.xpToNextLevel" [level]="player.level"></app-xp-progress>
+  </div>
+
+  <div class="grid-content">
+    <div class="stats-radar card-panel">
+      <h3>STATISTICS</h3>
+      <div class="hexagon-container">
+        <!-- SVG Hexagon representation -->
+        <svg viewBox="0 0 100 100" class="radar-chart">
+          <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" class="bg-poly" />
+          <polygon points="50,20 80,35 80,65 50,80 20,65 20,35" class="value-poly" />
+        </svg>
+        <div class="stat-labels">
+          <span class="str">STR: {{ player.stats.strength }}</span>
+          <span class="agi">AGI: {{ player.stats.agility }}</span>
+          <span class="sen">SEN: {{ player.stats.sense }}</span>
+          <span class="vit">VIT: {{ player.stats.vitality }}</span>
+          <span class="int">INT: {{ player.stats.intelligence }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="recent-activity card-panel">
+      <h3>SYSTEM LOG</h3>
+      <ul class="log-list">
+        <li><span class="time">10:42 AM</span> Completed Daily Quest: Push-ups</li>
+        <li><span class="time">09:15 AM</span> Leveled up to LV.{{ player.level }}</li>
+        <li><span class="time">08:00 AM</span> System initialized</li>
+      </ul>
+    </div>
+  </div>
+</div>

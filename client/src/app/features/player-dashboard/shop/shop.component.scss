@@ -1,0 +1,34 @@
+@use 'variables' as theme;
+
+.shop-container { display: flex; flex-direction: column; gap: 30px; }
+
+.header {
+  display: flex; justify-content: space-between; align-items: center;
+  h2 { margin: 0; color: theme.$arise-electric-blue; }
+  .gold-balance {
+    padding: 10px 20px; background: theme.$arise-black; border-radius: 4px;
+    font-size: 1.2rem; font-weight: bold; color: theme.$arise-gold;
+    span { text-shadow: 0 0 5px theme.$arise-gold; }
+  }
+}
+
+.items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+
+.item-card {
+  display: flex; flex-direction: column; gap: 15px; text-align: center;
+  .icon { font-size: 3rem; margin-bottom: 10px; }
+  .info {
+    h3 { margin: 0; color: theme.$arise-text; }
+    p { margin: 5px 0 0 0; color: theme.$arise-text-secondary; font-size: 0.9rem; }
+  }
+  .actions {
+    margin-top: auto; display: flex; flex-direction: column; gap: 10px;
+    .price { font-weight: bold; color: theme.$arise-gold; font-size: 1.1rem; }
+    .btn-buy {
+      padding: 10px; background: transparent; border: 1px solid theme.$arise-gold; color: theme.$arise-gold;
+      font-family: 'Rajdhani', sans-serif; font-weight: bold; cursor: pointer; transition: all 0.3s;
+      &:hover:not(:disabled) { background: rgba(255,215,0,0.2); box-shadow: 0 0 10px theme.$arise-gold; }
+      &:disabled { border-color: #555; color: #555; cursor: not-allowed; }
+    }
+  }
+}

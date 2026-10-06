@@ -1,0 +1,35 @@
+@use 'variables' as theme;
+
+.xp-progress-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring__circle {
+  transition: stroke-dashoffset 0.5s ease-out;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  stroke-dasharray: 282.743; /* 2 * PI * 45 */
+  filter: drop-shadow(0 0 5px theme.$arise-electric-blue);
+}
+
+.xp-text {
+  position: absolute;
+  text-align: center;
+  
+  .level {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: theme.$arise-electric-blue;
+    text-shadow: 0 0 5px theme.$arise-electric-blue;
+  }
+  
+  .xp-value {
+    font-size: 0.9em;
+    color: theme.$arise-text-secondary;
+  }
+}

@@ -1,0 +1,68 @@
+@use 'variables' as theme;
+
+.layout-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.admin-theme {
+  .sidebar {
+    width: 250px;
+    background-color: theme.$arise-dark-blue;
+    border-right: 1px solid theme.$arise-gold;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .admin-glow {
+    color: theme.$arise-gold;
+    text-shadow: 0 0 10px theme.$arise-gold;
+    margin: 0;
+  }
+
+  .nav-menu .nav-item {
+    padding: 15px 25px;
+    color: theme.$arise-text;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+    
+    &:hover { background: rgba(255, 215, 0, 0.1); color: theme.$arise-gold; }
+    &.active { border-left-color: theme.$arise-gold; background: rgba(255, 215, 0, 0.2); color: theme.$arise-gold; }
+  }
+}
+
+.brand { padding: 20px; text-align: center; border-bottom: 1px solid rgba(theme.$arise-gold, 0.3); }
+.nav-menu { flex: 1; padding: 20px 0; display: flex; flex-direction: column; }
+.divider { height: 1px; background: rgba(255,255,255,0.1); margin: 15px 20px; }
+.logout-container { padding: 20px; .btn-logout { width: 100%; padding: 10px; background: transparent; border: 1px solid theme.$arise-red; color: theme.$arise-red; cursor: pointer; transition: all 0.3s; &:hover { background: rgba(theme.$arise-red, 0.2); } } }
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: theme.$arise-black;
+}
+
+.topbar {
+  height: 70px;
+  background-color: rgba(theme.$arise-dark-blue, 0.8);
+  border-bottom: 1px solid rgba(theme.$arise-gold, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 30px;
+  
+  .admin-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    
+    .badge { background: theme.$arise-gold; color: #000; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
+    .name { color: theme.$arise-text; font-size: 1.2rem; }
+  }
+}
+
+.content-area { flex: 1; padding: 30px; overflow-y: auto; }

@@ -1,0 +1,36 @@
+<div class="stats-container" *ngIf="playerService.player() as player">
+  <div class="header-card card-panel">
+    <h2 class="system-text-glow">STATUS</h2>
+    <div class="points-available system-border-glow">
+      <span class="label">AVAILABLE POINTS:</span>
+      <span class="value">{{ player.stats.availablePoints }}</span>
+    </div>
+  </div>
+
+  <div class="stats-grid card-panel">
+    <div class="stat-row">
+      <app-stat-bar [label]="'Strength'" [value]="player.stats.strength" [max]="100" color="#FF1744"></app-stat-bar>
+      <button class="btn-allocate" [disabled]="player.stats.availablePoints <= 0" (click)="allocate('strength')">+</button>
+    </div>
+    
+    <div class="stat-row">
+      <app-stat-bar [label]="'Agility'" [value]="player.stats.agility" [max]="100" color="#00d4ff"></app-stat-bar>
+      <button class="btn-allocate" [disabled]="player.stats.availablePoints <= 0" (click)="allocate('agility')">+</button>
+    </div>
+
+    <div class="stat-row">
+      <app-stat-bar [label]="'Sense'" [value]="player.stats.sense" [max]="100" color="#7b2fff"></app-stat-bar>
+      <button class="btn-allocate" [disabled]="player.stats.availablePoints <= 0" (click)="allocate('sense')">+</button>
+    </div>
+
+    <div class="stat-row">
+      <app-stat-bar [label]="'Vitality'" [value]="player.stats.vitality" [max]="100" color="#4caf50"></app-stat-bar>
+      <button class="btn-allocate" [disabled]="player.stats.availablePoints <= 0" (click)="allocate('vitality')">+</button>
+    </div>
+
+    <div class="stat-row">
+      <app-stat-bar [label]="'Intelligence'" [value]="player.stats.intelligence" [max]="100" color="#ffd700"></app-stat-bar>
+      <button class="btn-allocate" [disabled]="player.stats.availablePoints <= 0" (click)="allocate('intelligence')">+</button>
+    </div>
+  </div>
+</div>

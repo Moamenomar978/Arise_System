@@ -1,0 +1,28 @@
+<div class="auth-container">
+  <div class="auth-card system-border-glow">
+    <div class="header">
+      <h2 class="system-text-glow">[SYSTEM]</h2>
+      <h3>HUNTER AUTHENTICATION REQUIRED</h3>
+    </div>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>EMAIL</label>
+        <input type="email" formControlName="email" class="system-input" placeholder="Enter Hunter Email">
+      </div>
+      
+      <div class="form-group">
+        <label>PASSWORD</label>
+        <input type="password" formControlName="password" class="system-input" placeholder="Enter Password">
+      </div>
+      
+      <button type="submit" [disabled]="loginForm.invalid" class="btn-submit">
+        AUTHENTICATE
+      </button>
+    </form>
+    
+    <div class="footer-links">
+      <a routerLink="../register">New Hunter Registration</a>
+    </div>
+  </div>
+</div>

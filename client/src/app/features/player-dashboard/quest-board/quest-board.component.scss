@@ -1,0 +1,36 @@
+@use 'variables' as theme;
+
+.quest-board-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.filters {
+  display: flex;
+  gap: 15px;
+  
+  button {
+    background: transparent;
+    border: 1px solid theme.$arise-electric-blue;
+    color: theme.$arise-electric-blue;
+    padding: 8px 20px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+    
+    &:hover, &.active {
+      background: rgba(0, 212, 255, 0.2);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    }
+  }
+}
+
+.quests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}

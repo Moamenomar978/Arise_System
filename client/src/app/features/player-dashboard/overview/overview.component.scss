@@ -1,0 +1,67 @@
+@use 'variables' as theme;
+
+.overview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+}
+
+.player-identity {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  .name-class {
+    h2 { margin: 0; color: theme.$arise-electric-blue; font-size: 2.5rem; text-shadow: 0 0 10px theme.$arise-electric-blue; }
+    .class-title { color: theme.$arise-purple; font-size: 1.2rem; font-weight: bold; }
+  }
+}
+
+.grid-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.hexagon-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+}
+
+.radar-chart {
+  width: 100%;
+  height: 100%;
+  .bg-poly { fill: rgba(255,255,255,0.05); stroke: rgba(255,255,255,0.2); stroke-width: 1; }
+  .value-poly { fill: rgba(theme.$arise-electric-blue, 0.3); stroke: theme.$arise-electric-blue; stroke-width: 2; filter: drop-shadow(0 0 5px theme.$arise-electric-blue); }
+}
+
+.stat-labels {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  span { position: absolute; font-weight: bold; color: theme.$arise-text; font-size: 0.9rem; }
+  .str { top: 0; left: 50%; transform: translateX(-50%); }
+  .agi { top: 25%; right: 0; }
+  .sen { bottom: 25%; right: 0; }
+  .vit { bottom: 0; left: 50%; transform: translateX(-50%); }
+  .int { top: 25%; left: 0; }
+}
+
+.log-list {
+  list-style: none; padding: 0; margin: 0;
+  li {
+    padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+    &:last-child { border-bottom: none; }
+    .time { color: theme.$arise-text-secondary; margin-right: 15px; font-family: monospace; }
+  }
+}

@@ -1,0 +1,24 @@
+<div class="shop-container" *ngIf="playerService.player() as player">
+  <div class="header">
+    <h2 class="system-text-glow">SYSTEM SHOP</h2>
+    <div class="gold-balance system-border-glow">
+      BALANCE: <span>{{ player.gold }} G</span>
+    </div>
+  </div>
+
+  <div class="items-grid">
+    @for (item of items; track item.id) {
+      <div class="item-card card-panel">
+        <div class="icon">{{ item.icon }}</div>
+        <div class="info">
+          <h3>{{ item.name }}</h3>
+          <p>{{ item.desc }}</p>
+        </div>
+        <div class="actions">
+          <span class="price">{{ item.price }} G</span>
+          <button class="btn-buy" [disabled]="player.gold < item.price" (click)="buyItem(item)">PURCHASE</button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

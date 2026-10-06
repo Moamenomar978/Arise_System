@@ -1,0 +1,36 @@
+<div class="admin-panel-container">
+  <div class="header">
+    <h2 class="admin-glow">USER MANAGEMENT</h2>
+    <button class="btn-action">ADD HUNTER</button>
+  </div>
+
+  <div class="table-container card-panel">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>HUNTER NAME</th>
+          <th>EMAIL</th>
+          <th>ROLE</th>
+          <th>STATUS</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user.id) {
+          <tr>
+            <td>#{{ user.id }}</td>
+            <td class="highlight">{{ user.hunterName }}</td>
+            <td>{{ user.email }}</td>
+            <td><span class="badge" [class.admin]="user.role === 'ADMIN'">{{ user.role }}</span></td>
+            <td><span class="status active">{{ user.status }}</span></td>
+            <td class="actions">
+              <button class="btn-edit" (click)="editUser(user.id)">EDIT</button>
+              <button class="btn-ban" (click)="banUser(user.id)">BAN</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

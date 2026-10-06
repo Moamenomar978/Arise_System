@@ -1,0 +1,15 @@
+<div class="achievements-container">
+  <h2 class="system-text-glow">ACHIEVEMENTS</h2>
+  
+  <div class="grid">
+    @for (ach of achievements; track ach.id) {
+      <div class="achievement-card card-panel" [class.locked]="!ach.unlocked">
+        <div class="icon">{{ ach.icon }}</div>
+        <div class="details">
+          <h3>{{ ach.title }}</h3>
+          <p>{{ ach.description }}</p>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="layout-container">
+  <aside class="sidebar system-border-glow">
+    <div class="brand">
+      <h2 class="system-text-glow">ARISE</h2>
+    </div>
+    
+    <nav class="nav-menu">
+      <a routerLink="overview" routerLinkActive="active" class="nav-item">📊 Overview</a>
+      <a routerLink="daily-quests" routerLinkActive="active" class="nav-item">⚔️ Daily Quests</a>
+      <a routerLink="quest-board" routerLinkActive="active" class="nav-item">📋 Quest Board</a>
+      <a routerLink="stats" routerLinkActive="active" class="nav-item">📈 Stats</a>
+      <a routerLink="achievements" routerLinkActive="active" class="nav-item">🏆 Achievements</a>
+      <a routerLink="shop" routerLinkActive="active" class="nav-item">🛒 Shop</a>
+      
+      <div *appHasRole="'ADMIN'">
+        <div class="divider"></div>
+        <a routerLink="/admin" class="nav-item admin-link">⚙️ Admin Panel</a>
+      </div>
+    </nav>
+    
+    <div class="logout-container">
+      <button (click)="logout()" class="btn-logout">LOGOUT</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      @if (playerService.player(); as player) {
+        <div class="player-info">
+          <app-rank-badge [rank]="player.rank"></app-rank-badge>
+          <div class="details">
+            <span class="name">{{ authService.currentUser()?.hunterName }}</span>
+            <span class="level">LV. {{ player.level }}</span>
+          </div>
+        </div>
+        
+        <div class="status-bars">
+          <div class="hp-bar-container">
+            <span>HP</span>
+            <div class="bar"><div class="fill hp" [style.width.%]="(player.hp / player.maxHp) * 100"></div></div>
+            <span>{{ player.hp }}/{{ player.maxHp }}</span>
+          </div>
+          <div class="mp-bar-container">
+            <span>MP</span>
+            <div class="bar"><div class="fill mp" [style.width.%]="(player.mp / player.maxMp) * 100"></div></div>
+            <span>{{ player.mp }}/{{ player.maxMp }}</span>
+          </div>
+        </div>
+        
+        <div class="gold-info">
+          <span class="gold-icon">💰</span>
+          <span class="gold-amount">{{ player.gold }} G</span>
+        </div>
+      }
+    </header>
+
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

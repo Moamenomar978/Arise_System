@@ -1,0 +1,62 @@
+@use '@angular/material' as mat;
+
+$arise-black: #0a0a0f;
+$arise-dark-blue: #0d1b2a;
+$arise-electric-blue: #00d4ff;
+$arise-purple: #7b2fff;
+$arise-gold: #ffd700;
+$arise-red: #FF1744;
+$arise-text: #e0e0e0;
+$arise-text-secondary: #9e9e9e;
+
+html, body { 
+  height: 100%; 
+  margin: 0; 
+  background-color: $arise-black;
+  color: $arise-text;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+body.arise-theme {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: $arise-black;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: $arise-dark-blue;
+    border-radius: 4px;
+    border: 1px solid $arise-electric-blue;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: $arise-electric-blue;
+  }
+}
+
+.system-text-glow {
+  text-shadow: 0 0 5px $arise-electric-blue, 0 0 10px $arise-electric-blue;
+}
+.system-border-glow {
+  box-shadow: 0 0 10px rgba($arise-electric-blue, 0.5), inset 0 0 10px rgba($arise-electric-blue, 0.2);
+  border: 1px solid $arise-electric-blue;
+}
+.card-panel {
+  background-color: rgba($arise-dark-blue, 0.8);
+  border: 1px solid rgba($arise-electric-blue, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  &:hover {
+    border-color: $arise-electric-blue;
+    box-shadow: 0 0 15px rgba($arise-electric-blue, 0.4);
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Rajdhani', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

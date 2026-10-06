@@ -1,0 +1,13 @@
+<div class="stat-bar-container">
+  <div class="stat-header">
+    <span class="stat-label">{{ label | uppercase }}</span>
+    <span class="stat-value">{{ value }} / {{ max }}</span>
+  </div>
+  <div class="bar-track">
+    <div class="bar-fill" 
+         [style.width.%]="percentage"
+         [style.background-color]="color"
+         [style.box-shadow]="'0 0 10px ' + color">
+    </div>
+  </div>
+</div>

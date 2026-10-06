@@ -1,0 +1,95 @@
+@use 'variables' as theme;
+
+.quest-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  &.completed {
+    opacity: 0.7;
+    border-color: #4caf50;
+    .btn-complete { display: none; }
+  }
+}
+
+.quest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 10px;
+
+  .title-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    h3 { margin: 0; color: theme.$arise-electric-blue; }
+  }
+
+  .quest-type {
+    background: rgba(255,255,255,0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+  }
+}
+
+.quest-body {
+  flex: 1;
+
+  .description { color: theme.$arise-text-secondary; margin-bottom: 15px; }
+
+  h4 { margin: 0 0 10px 0; color: theme.$arise-text; }
+
+  .objectives {
+    margin-bottom: 15px;
+    ul { list-style: none; padding: 0; margin: 0; }
+    li {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      color: theme.$arise-text-secondary;
+      .progress { color: theme.$arise-electric-blue; font-weight: bold; }
+    }
+  }
+
+  .reward-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .reward {
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9em;
+
+      &.xp { background: rgba(0, 212, 255, 0.1); color: theme.$arise-electric-blue; border: 1px solid theme.$arise-electric-blue; }
+      &.gold { background: rgba(255, 215, 0, 0.1); color: theme.$arise-gold; border: 1px solid theme.$arise-gold; }
+      &.item { background: rgba(123, 47, 255, 0.1); color: theme.$arise-purple; border: 1px solid theme.$arise-purple; }
+    }
+  }
+}
+
+.quest-actions {
+  margin-top: auto;
+  .btn-complete {
+    width: 100%;
+    padding: 12px;
+    background: rgba(theme.$arise-electric-blue, 0.1);
+    border: 1px solid theme.$arise-electric-blue;
+    color: theme.$arise-electric-blue;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+
+    &:hover {
+      background: rgba(theme.$arise-electric-blue, 0.3);
+      box-shadow: 0 0 15px rgba(theme.$arise-electric-blue, 0.5);
+    }
+  }
+}

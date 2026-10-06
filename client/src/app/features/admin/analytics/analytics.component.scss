@@ -1,0 +1,18 @@
+@use 'variables' as theme;
+
+.stats-overview {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px;
+}
+
+.stat-card {
+  text-align: center; padding: 30px;
+  h3 { margin: 0 0 10px 0; color: theme.$arise-text-secondary; font-size: 1rem; }
+  .value { font-size: 3rem; font-weight: bold; color: theme.$arise-text; }
+  .value.highlight { color: theme.$arise-gold; text-shadow: 0 0 10px theme.$arise-gold; }
+}
+
+.chart-container {
+  padding: 20px;
+  h3 { color: theme.$arise-gold; margin: 0 0 20px 0; }
+  canvas { max-height: 400px; }
+}

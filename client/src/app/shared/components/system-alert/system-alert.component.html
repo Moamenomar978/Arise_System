@@ -1,0 +1,8 @@
+<div class="alerts-container">
+  @for (alert of notificationService.alerts(); track alert.id) {
+    <div class="system-alert" [ngClass]="alert.type.toLowerCase()">
+      <div class="alert-header">[SYSTEM]</div>
+      <div class="alert-body">{{ alert.message }}</div>
+    </div>
+  }
+</div>

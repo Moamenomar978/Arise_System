@@ -1,0 +1,33 @@
+<div class="layout-container admin-theme">
+  <aside class="sidebar">
+    <div class="brand">
+      <h2 class="admin-glow">SYSTEM ADMIN</h2>
+    </div>
+    
+    <nav class="nav-menu">
+      <a routerLink="users" routerLinkActive="active" class="nav-item">👥 Users</a>
+      <a routerLink="quests" routerLinkActive="active" class="nav-item">📝 Quests</a>
+      <a routerLink="analytics" routerLinkActive="active" class="nav-item">📊 Analytics</a>
+      
+      <div class="divider"></div>
+      <a routerLink="/dashboard" class="nav-item return-link">⬅️ Return to Game</a>
+    </nav>
+    
+    <div class="logout-container">
+      <button (click)="logout()" class="btn-logout">LOGOUT</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="admin-info">
+        <span class="badge">S-RANK ADMIN</span>
+        <span class="name">{{ authService.currentUser()?.hunterName }}</span>
+      </div>
+    </header>
+
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

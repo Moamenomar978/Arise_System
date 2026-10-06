@@ -1,0 +1,45 @@
+@use 'variables' as theme;
+
+.alerts-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.system-alert {
+  background-color: rgba(13, 27, 42, 0.9);
+  border: 1px solid theme.$arise-electric-blue;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+  border-radius: 4px;
+  padding: 12px 20px;
+  min-width: 250px;
+  animation: slideIn 0.3s ease-out;
+  backdrop-filter: blur(5px);
+
+  &.success { border-color: theme.$arise-electric-blue; box-shadow: 0 0 10px theme.$arise-electric-blue; }
+  &.warning { border-color: theme.$arise-gold; box-shadow: 0 0 10px theme.$arise-gold; }
+  &.error { border-color: theme.$arise-red; box-shadow: 0 0 10px theme.$arise-red; }
+  &.info { border-color: theme.$arise-purple; box-shadow: 0 0 10px theme.$arise-purple; }
+}
+
+.alert-header {
+  color: theme.$arise-electric-blue;
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  text-shadow: 0 0 5px theme.$arise-electric-blue;
+}
+
+.alert-body {
+  color: theme.$arise-text;
+  font-size: 1em;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}

@@ -1,0 +1,40 @@
+<div class="quest-card card-panel" [ngClass]="quest.status.toLowerCase()">
+  <div class="quest-header">
+    <div class="title-group">
+      <app-rank-badge [rank]="quest.rank"></app-rank-badge>
+      <h3>{{ quest.title }}</h3>
+    </div>
+    <span class="quest-type">{{ quest.type }}</span>
+  </div>
+  
+  <div class="quest-body">
+    <p class="description">{{ quest.description }}</p>
+    
+    <div class="objectives">
+      <h4>Objectives:</h4>
+      <ul>
+        @for (obj of quest.objectives; track obj.id) {
+          <li>
+            <span>{{ obj.description }}</span>
+            <span class="progress">[{{ obj.current }} / {{ obj.target }}]</span>
+          </li>
+        }
+      </ul>
+    </div>
+    
+    <div class="rewards">
+      <h4>Rewards:</h4>
+      <div class="reward-tags">
+        <span class="reward xp">XP: {{ quest.rewards.xp }}</span>
+        <span class="reward gold">Gold: {{ quest.rewards.gold }}</span>
+        @for (item of quest.rewards.items; track item) {
+          <span class="reward item">{{ item }}</span>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="quest-actions" *ngIf="quest.status !== 'COMPLETED'">
+    <button class="btn-complete" (click)="onComplete()">COMPLETE QUEST</button>
+  </div>
+</div>

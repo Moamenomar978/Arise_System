@@ -1,0 +1,21 @@
+<div class="daily-quests-container">
+  <div class="header-section">
+    <h2 class="system-text-glow">DAILY QUEST: PREPARING TO BECOME POWERFUL</h2>
+    <div class="countdown system-border-glow">
+      <span class="label">TIME REMAINING:</span>
+      <span class="time">{{ timeLeft() }}</span>
+    </div>
+  </div>
+
+  <div class="quests-grid">
+    @for (quest of questService.dailyQuests(); track quest.id) {
+      <app-quest-card [quest]="quest" (complete)="onQuestComplete($event)"></app-quest-card>
+    }
+  </div>
+  
+  @if (questService.dailyQuests().length === 0) {
+    <div class="empty-state">
+      <p>NO DAILY QUESTS AVAILABLE</p>
+    </div>
+  }
+</div>

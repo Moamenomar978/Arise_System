@@ -1,0 +1,93 @@
+<div class="admin-panel-container">
+  <div class="header">
+    <h2 class="admin-glow">QUEST MANAGEMENT</h2>
+    <button class="btn-action" (click)="openCreate()">CREATE NEW QUEST</button>
+  </div>
+
+  @if (showForm()) {
+    <form class="quest-form card-panel" [formGroup]="form" (ngSubmit)="save()">
+      <h3>{{ editingId() ? 'EDIT QUEST' : 'NEW QUEST' }}</h3>
+
+      <label class="full">TITLE
+        <input type="text" formControlName="title" placeholder="Quest title">
+      </label>
+
+      <label class="full">DESCRIPTION
+        <textarea rows="2" formControlName="description" placeholder="What does the hunter have to do?"></textarea>
+      </label>
+
+      <label>TYPE
+        <select formControlName="type">
+          @for (t of types; track t) { <option [value]="t">{{ t | uppercase }}</option> }
+        </select>
+      </label>
+
+      <label>RANK
+        <select formControlName="rank">
+          @for (r of ranks; track r) { <option [value]="r">{{ r }}</option> }
+        </select>
+      </label>
+
+      <label>TARGET AMOUNT
+        <input type="number" min="1" formControlName="targetAmount">
+      </label>
+
+      <label>REWARD XP
+        <input type="number" min="0" formControlName="rewardXp">
+      </label>
+
+      <label>REWARD GOLD
+        <input type="number" min="0" formControlName="rewardGold">
+      </label>
+
+      <label class="check">
+        <input type="checkbox" formControlName="isActive"> ACTIVE (visible to hunters)
+      </label>
+
+      <div class="form-actions full">
+        <button type="submit" class="btn-action" [disabled]="form.invalid">SAVE</button>
+        <button type="button" class="btn-cancel" (click)="cancel()">CANCEL</button>
+      </div>
+    </form>
+  }
+
+  <div class="table-container card-panel">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>TITLE</th>
+          <th>TYPE</th>
+          <th>RANK</th>
+          <th>TARGET</th>
+          <th>XP</th>
+          <th>GOLD</th>
+          <th>STATUS</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (quest of questService.adminQuests(); track quest._id) {
+          <tr [class.inactive]="!quest.isActive">
+            <td class="highlight">{{ quest.title }}</td>
+            <td>{{ quest.type | uppercase }}</td>
+            <td><span class="rank-badge {{ quest.rank.toLowerCase() }}">{{ quest.rank }}</span></td>
+            <td>{{ quest.targetAmount }}</td>
+            <td>{{ quest.rewardXp }}</td>
+            <td>{{ quest.rewardGold }}</td>
+            <td>
+              <button class="btn-toggle" [class.on]="quest.isActive" (click)="toggleActive(quest)">
+                {{ quest.isActive ? 'ACTIVE' : 'HIDDEN' }}
+              </button>
+            </td>
+            <td class="actions">
+              <button class="btn-edit" (click)="openEdit(quest)">EDIT</button>
+              <button class="btn-ban" (click)="remove(quest)">DELETE</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="8" class="empty">NO QUESTS YET</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

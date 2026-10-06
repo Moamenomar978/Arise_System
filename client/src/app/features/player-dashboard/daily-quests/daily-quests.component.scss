@@ -1,0 +1,42 @@
+@use 'variables' as theme;
+
+.daily-quests-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(theme.$arise-dark-blue, 0.5);
+  padding: 20px;
+  border-radius: 8px;
+  
+  h2 { margin: 0; color: theme.$arise-electric-blue; }
+  
+  .countdown {
+    padding: 10px 20px;
+    background: theme.$arise-black;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    
+    .label { color: theme.$arise-text-secondary; margin-right: 10px; }
+    .time { color: theme.$arise-red; font-weight: bold; text-shadow: 0 0 5px theme.$arise-red; }
+  }
+}
+
+.quests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px;
+  color: theme.$arise-text-secondary;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+}

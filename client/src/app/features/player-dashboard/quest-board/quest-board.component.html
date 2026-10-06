@@ -1,0 +1,14 @@
+<div class="quest-board-container">
+  <div class="filters">
+    <button [class.active]="activeFilter === 'ALL'" (click)="setFilter('ALL')">ALL</button>
+    <button [class.active]="activeFilter === 'STORY'" (click)="setFilter('STORY')">STORY</button>
+    <button [class.active]="activeFilter === 'WEEKLY'" (click)="setFilter('WEEKLY')">WEEKLY</button>
+    <button [class.active]="activeFilter === 'HIDDEN'" (click)="setFilter('HIDDEN')">HIDDEN</button>
+  </div>
+
+  <div class="quests-grid">
+    @for (quest of filteredQuests; track quest.id) {
+      <app-quest-card [quest]="quest" (complete)="onQuestComplete($event)"></app-quest-card>
+    }
+  </div>
+</div>
