@@ -1,0 +1,45 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
+
+export type PlayerDocument = Player & Document;
+
+@Schema({ timestamps: true })
+export class Player {
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  userId: string;
+
+  @Prop({ default: 1 })
+  level: number;
+
+  @Prop({ default: 0 })
+  currentXP: number;
+
+  @Prop({ default: 'E' })
+  rank: string;
+
+  @Prop({ default: 100 })
+  hp: number;
+
+  @Prop({ default: 100 })
+  maxHp: number;
+
+  @Prop({ default: 0 })
+  gold: number;
+
+  @Prop({ default: 0 })
+  statPoints: number;
+
+  @Prop({ type: Object, default: { strength: 1, agility: 1, intelligence: 1, perception: 1, vitality: 1 } })
+  stats: {
+    strength: number;
+    agility: number;
+    intelligence: number;
+    perception: number;
+    vitality: number;
+  };
+  
+  @Prop({ default: false })
+  inPenaltyZone: boolean;
+}
+
+export const PlayerSchema = SchemaFactory.createForClass(Player);

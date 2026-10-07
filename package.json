@@ -1,0 +1,24 @@
+{
+  "name": "arise",
+  "version": "1.0.0",
+  "description": "ARISE — Solo Leveling Inspired Self-Development System",
+  "private": true,
+  "workspaces": [
+    "shared",
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "start:server": "npm run start:dev --workspace=server",
+    "start:client": "npm run start --workspace=client",
+    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "build:server": "npm run build --workspace=server",
+    "build:client": "npm run build --workspace=client",
+    "build": "npm run build:server && npm run build:client",
+    "test:server": "npm run test --workspace=server",
+    "test:client": "npm run test --workspace=client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
