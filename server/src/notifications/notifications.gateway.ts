@@ -4,8 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
-@WebSocketGateway({ cors: { origin: 'http://localhost:4200', credentials: true } })
-@Injectable()
+@WebSocketGateway({ cors: { origin: process.env.CLIENT_URL || 'http://localhost:4200', credentials: true } })@Injectable()
 export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
