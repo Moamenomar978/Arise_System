@@ -1,6 +1,7 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { QuestService } from '../../../core/services/quest.service';
+import { QuestResult, QuestService } from '../../../core/services/quest.service';
+import { PlayerService } from '../../../core/services/player.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { QuestCardComponent } from '../../../shared/components/quest-card/quest-card.component';
 
@@ -13,13 +14,16 @@ import { QuestCardComponent } from '../../../shared/components/quest-card/quest-
 })
 export class DailyQuestsComponent implements OnInit, OnDestroy {
   questService = inject(QuestService);
+  playerService = inject(PlayerService);
   notificationService = inject(NotificationService);
 
   timeLeft = signal('00:00:00');
   private timer?: ReturnType<typeof setInterval>;
+  private midnightReloadDone = false;
 
   ngOnInit() {
     this.questService.loadDailyQuests().subscribe();
+    this.playerService.loadPlayer().subscribe();
     this.tick();
     this.timer = setInterval(() => this.tick(), 1000);
   }
@@ -38,21 +42,38 @@ export class DailyQuestsComponent implements OnInit, OnDestroy {
     const m = Math.floor((diff % 3600000) / 60000);
     const s = Math.floor((diff % 60000) / 1000);
     this.timeLeft.set(`${pad(h)}:${pad(m)}:${pad(s)}`);
-    if (diff < 1500 && this.timer) {
-      // a new day started: reload the fresh quests
-      setTimeout(() => this.questService.loadDailyQuests().subscribe(), 2000);
+
+    // A new day started: reload the fresh quests once
+    if (diff < 1500 && !this.midnightReloadDone) {
+      this.midnightReloadDone = true;
+      setTimeout(() => {
+        this.questService.loadDailyQuests().subscribe();
+        this.midnightReloadDone = false;
+      }, 3000);
     }
+  }
+
+  private handleResult(res: QuestResult) {
+    this.notificationService.showAlert(this.questService.rewardMessage(res), res.completed ? 'SUCCESS' : 'INFO');
+    this.questService.loadDailyQuests().subscribe();
+    this.playerService.loadPlayer().subscribe();
+  }
+
+  private handleError(err: any) {
+    this.notificationService.showAlert(err?.error?.message || 'COULD NOT UPDATE QUEST', 'ERROR');
   }
 
   onQuestComplete(id: string) {
     this.questService.completeQuest(id).subscribe({
-      next: () => {
-        this.notificationService.showAlert(`Quest Completed!`, 'SUCCESS');
-        this.questService.loadDailyQuests().subscribe();
-      },
-      error: (err) => {
-        this.notificationService.showAlert(err?.error?.message || 'COULD NOT COMPLETE QUEST', 'ERROR');
-      }
+      next: res => this.handleResult(res),
+      error: err => this.handleError(err)
+    });
+  }
+
+  onQuestProgress(e: { id: string; amount: number }) {
+    this.questService.addProgress(e.id, e.amount).subscribe({
+      next: res => this.handleResult(res),
+      error: err => this.handleError(err)
     });
   }
 }

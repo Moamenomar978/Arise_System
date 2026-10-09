@@ -12,6 +12,8 @@ import { PenaltiesModule } from './penalties/penalties.module';
 import { AchievementsModule } from './achievements/achievements.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ShopModule } from './shop/shop.module';
+import { GoalsModule } from './goals/goals.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { ShopModule } from './shop/shop.module';
     AchievementsModule,
     NotificationsModule,
     ShopModule,
+    GoalsModule,
+    AdminModule,
   ],
 })
 export class AppModule {}

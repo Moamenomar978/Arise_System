@@ -3,8 +3,8 @@
     <div class="player-identity">
       <app-rank-badge [rank]="player.rank"></app-rank-badge>
       <div class="name-class">
-        <h2>SUNG JIN-WOO</h2>
-        <span class="class-title">Shadow Monarch</span>
+        <h2>{{ (authService.currentUser()?.hunterName || 'HUNTER') | uppercase }}</h2>
+        <span class="class-title">{{ titleFor(player.rank) }}</span>
       </div>
     </div>
     
@@ -31,11 +31,13 @@
     </div>
 
     <div class="recent-activity card-panel">
-      <h3>SYSTEM LOG</h3>
+      <h3>STATUS</h3>
       <ul class="log-list">
-        <li><span class="time">10:42 AM</span> Completed Daily Quest: Push-ups</li>
-        <li><span class="time">09:15 AM</span> Leveled up to LV.{{ player.level }}</li>
-        <li><span class="time">08:00 AM</span> System initialized</li>
+        <li><span class="time">🔥 STREAK</span> {{ player.streak }} day(s) · best {{ player.bestStreak }}</li>
+        <li><span class="time">🧊 FREEZES</span> {{ player.streakFreezes }}</li>
+        <li><span class="time">❤️ HP</span> {{ player.hp }} / {{ player.maxHp }}</li>
+        <li><span class="time">💰 GOLD</span> {{ player.gold }}</li>
+        <li><span class="time">⭐ POINTS</span> {{ player.stats.availablePoints }} stat point(s) to spend</li>
       </ul>
     </div>
   </div>

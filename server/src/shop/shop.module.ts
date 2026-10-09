@@ -4,11 +4,13 @@ import { ShopController } from './shop.controller';
 import { ShopService } from './shop.service';
 import { ShopItem, ShopItemSchema } from './schemas/shop-item.schema';
 import { PlayersModule } from '../players/players.module';
+import { AchievementsModule } from '../achievements/achievements.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: ShopItem.name, schema: ShopItemSchema }]),
     forwardRef(() => PlayersModule),
+    AchievementsModule,
   ],
   controllers: [ShopController],
   providers: [ShopService],

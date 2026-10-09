@@ -1,0 +1,117 @@
+@use 'variables' as theme;
+
+.goals-container { display: flex; flex-direction: column; gap: 20px; }
+
+.header-section {
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(theme.$arise-dark-blue, 0.5); padding: 20px; border-radius: 8px;
+  h2 { margin: 0; color: theme.$arise-electric-blue; }
+}
+
+.btn-primary, .btn-secondary, .btn-cancel, .btn-delete, .btn-icon {
+  font-family: 'Rajdhani', sans-serif; font-weight: bold; cursor: pointer; border-radius: 4px; transition: all 0.3s;
+}
+.btn-primary {
+  padding: 10px 20px; background: rgba(0,212,255,0.1); border: 1px solid theme.$arise-electric-blue; color: theme.$arise-electric-blue;
+  &:hover:not(:disabled) { background: rgba(0,212,255,0.3); box-shadow: 0 0 10px rgba(0,212,255,0.5); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+.btn-secondary {
+  padding: 6px 14px; background: transparent; border: 1px solid rgba(0,212,255,0.5); color: theme.$arise-electric-blue;
+  &:hover { background: rgba(0,212,255,0.15); }
+}
+.btn-cancel, .btn-delete {
+  padding: 6px 14px; background: transparent; border: 1px solid theme.$arise-red; color: theme.$arise-red;
+  &:hover { background: rgba(255,23,68,0.2); }
+}
+.btn-icon {
+  width: 34px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: theme.$arise-text;
+  &:disabled { opacity: 0.3; cursor: not-allowed; }
+}
+
+.goal-form {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px;
+  h3 { grid-column: 1 / -1; margin: 0; color: theme.$arise-electric-blue; }
+  label { display: flex; flex-direction: column; gap: 6px; color: theme.$arise-electric-blue; font-weight: bold; font-size: 0.9rem; }
+  .full { grid-column: 1 / -1; }
+  input[type='text'], input[type='date'], textarea, select {
+    padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid rgba(0,212,255,0.3);
+    color: theme.$arise-text; font-family: 'Rajdhani', sans-serif; font-size: 1rem; border-radius: 4px;
+    &:focus { outline: none; border-color: theme.$arise-electric-blue; }
+  }
+  .steps-editor {
+    display: flex; flex-direction: column; gap: 8px;
+    .steps-label { color: theme.$arise-electric-blue; font-weight: bold; font-size: 0.9rem; }
+    .step-row { display: flex; gap: 8px; input { flex: 1; } }
+    .btn-secondary { align-self: flex-start; }
+  }
+  .form-actions { display: flex; gap: 10px; }
+}
+
+.filters {
+  display: flex; gap: 15px;
+  button {
+    background: transparent; border: 1px solid theme.$arise-electric-blue; color: theme.$arise-electric-blue;
+    padding: 8px 20px; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; font-weight: bold; cursor: pointer; border-radius: 4px; transition: all 0.3s;
+    &:hover, &.active { background: rgba(0,212,255,0.2); box-shadow: 0 0 10px rgba(0,212,255,0.5); }
+  }
+}
+
+.goals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+
+.goal-card {
+  display: flex; flex-direction: column; gap: 14px; padding: 20px;
+  &.done { opacity: 0.75; border-color: #4caf50; }
+  &.overdue { border-color: theme.$arise-red; }
+
+  .goal-header {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+    h3 { margin: 0; color: theme.$arise-text; }
+  }
+  .difficulty {
+    padding: 3px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid;
+    &.easy { color: #8bc34a; }
+    &.medium { color: #29b6f6; }
+    &.hard { color: #ffa726; }
+    &.epic { color: theme.$arise-red; text-shadow: 0 0 5px theme.$arise-red; }
+  }
+  .description { margin: 0; color: theme.$arise-text-secondary; }
+
+  .progress-wrap {
+    display: flex; align-items: center; gap: 10px;
+    .bar { flex: 1; height: 10px; background: rgba(0,0,0,0.6); border-radius: 5px; overflow: hidden; }
+    .fill { height: 100%; background: theme.$arise-electric-blue; box-shadow: 0 0 8px theme.$arise-electric-blue; transition: width 0.4s; }
+    .percent { color: theme.$arise-electric-blue; font-weight: bold; min-width: 42px; text-align: right; }
+  }
+
+  .steps {
+    list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px;
+    label { display: flex; align-items: center; gap: 10px; cursor: pointer; color: theme.$arise-text; }
+    li.checked span { text-decoration: line-through; color: theme.$arise-text-secondary; }
+    input[type='checkbox'] { width: 18px; height: 18px; accent-color: #00d4ff; }
+  }
+
+  .add-step {
+    display: flex; gap: 8px;
+    input {
+      flex: 1; padding: 8px; background: rgba(0,0,0,0.5); border: 1px solid rgba(0,212,255,0.3);
+      color: theme.$arise-text; font-family: 'Rajdhani', sans-serif; border-radius: 4px;
+      &:focus { outline: none; border-color: theme.$arise-electric-blue; }
+    }
+  }
+
+  .goal-footer {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
+    .meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .reward { color: theme.$arise-electric-blue; font-weight: bold; &.gold { color: theme.$arise-gold; } }
+    .deadline { color: theme.$arise-text-secondary; font-size: 0.9rem; &.late { color: theme.$arise-red; font-weight: bold; } }
+  }
+}
+
+.empty-state {
+  text-align: center; padding: 50px; color: theme.$arise-text-secondary; font-size: 1.3rem; letter-spacing: 2px;
+}
+
+@media (max-width: 700px) {
+  .goal-form { grid-template-columns: 1fr; }
+}

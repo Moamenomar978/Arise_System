@@ -37,9 +37,38 @@ export class Player {
     perception: number;
     vitality: number;
   };
-  
+
   @Prop({ default: false })
   inPenaltyZone: boolean;
+
+  // When the player pressed "enter" in the penalty zone (starts the timer)
+  @Prop({ type: Date })
+  penaltyStartedAt?: Date;
+
+  // ----- streak -----
+  @Prop({ default: 0 })
+  streak: number;
+
+  @Prop({ default: 0 })
+  bestStreak: number;
+
+  // Local date ("YYYY-MM-DD") of the last day a daily quest was completed
+  @Prop({ default: '' })
+  lastActiveDate: string;
+
+  // Each freeze protects the streak (and HP) for one missed day
+  @Prop({ default: 0 })
+  streakFreezes: number;
+
+  // ----- shop -----
+  @Prop({ default: 0 })
+  purchases: number;
+
+  @Prop({
+    type: [{ itemId: String, name: String, icon: String, quantity: { type: Number, default: 1 } }],
+    default: [],
+  })
+  inventory: { itemId: string; name: string; icon?: string; quantity: number }[];
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);

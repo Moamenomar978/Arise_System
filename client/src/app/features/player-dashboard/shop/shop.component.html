@@ -6,19 +6,38 @@
     </div>
   </div>
 
+  <div class="status-line">
+    <span>HP: <strong>{{ player.hp }}/{{ player.maxHp }}</strong></span>
+    <span>STREAK FREEZES: <strong>{{ player.streakFreezes }}</strong></span>
+    <span>STAT POINTS: <strong>{{ player.stats.availablePoints }}</strong></span>
+  </div>
+
   <div class="items-grid">
-    @for (item of items; track item.id) {
+    @for (item of shopService.items(); track item._id) {
       <div class="item-card card-panel">
         <div class="icon">{{ item.icon }}</div>
         <div class="info">
           <h3>{{ item.name }}</h3>
-          <p>{{ item.desc }}</p>
+          <p>{{ item.description }}</p>
         </div>
         <div class="actions">
           <span class="price">{{ item.price }} G</span>
           <button class="btn-buy" [disabled]="player.gold < item.price" (click)="buyItem(item)">PURCHASE</button>
         </div>
       </div>
+    }
+  </div>
+
+  <div class="inventory card-panel">
+    <h3>YOUR ITEMS</h3>
+    @if (player.inventory.length) {
+      <div class="inv-list">
+        @for (inv of player.inventory; track inv.itemId) {
+          <span class="inv-item">{{ inv.icon }} {{ inv.name }}<span class="qty">x{{ inv.quantity }}</span></span>
+        }
+      </div>
+    } @else {
+      <p class="empty">Collectible items you buy will appear here.</p>
     }
   </div>
 </div>

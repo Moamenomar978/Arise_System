@@ -8,7 +8,7 @@
 
   <div class="quests-grid">
     @for (quest of filteredQuests; track quest.id) {
-      <app-quest-card [quest]="quest" (complete)="onQuestComplete($event)"></app-quest-card>
+      <app-quest-card [quest]="quest" (complete)="onQuestComplete($event)" (progress)="onQuestProgress($event)"></app-quest-card>
     }
   </div>
 </div>

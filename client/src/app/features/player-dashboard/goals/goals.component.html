@@ -1,0 +1,115 @@
+<div class="goals-container">
+  <div class="header-section">
+    <h2 class="system-text-glow">PERSONAL GOALS</h2>
+    <button class="btn-primary" (click)="openForm()">+ NEW GOAL</button>
+  </div>
+
+  @if (showForm()) {
+    <form class="goal-form card-panel" [formGroup]="form" (ngSubmit)="createGoal()">
+      <h3>DEFINE YOUR GOAL</h3>
+
+      <label class="full">TITLE
+        <input type="text" formControlName="title" placeholder="What do you want to achieve?">
+      </label>
+
+      <label class="full">DESCRIPTION (optional)
+        <textarea rows="2" formControlName="description" placeholder="Why does it matter to you?"></textarea>
+      </label>
+
+      <label>DIFFICULTY
+        <select formControlName="difficulty">
+          @for (d of difficulties; track d.value) {
+            <option [value]="d.value">{{ d.label }}: {{ d.xp }} XP / {{ d.gold }} G</option>
+          }
+        </select>
+      </label>
+
+      <label>DEADLINE (optional)
+        <input type="date" formControlName="deadline">
+      </label>
+
+      <div class="full steps-editor" formArrayName="steps">
+        <span class="steps-label">STEPS</span>
+        @for (ctrl of stepControls; track $index) {
+          <div class="step-row">
+            <input type="text" [formControlName]="$index" placeholder="Step {{ $index + 1 }}">
+            <button type="button" class="btn-icon" (click)="removeStepField($index)" [disabled]="stepControls.length === 1">✕</button>
+          </div>
+        }
+        <button type="button" class="btn-secondary" (click)="addStepField()">+ ADD STEP</button>
+      </div>
+
+      <div class="form-actions full">
+        <button type="submit" class="btn-primary" [disabled]="form.invalid">CREATE GOAL</button>
+        <button type="button" class="btn-cancel" (click)="showForm.set(false)">CANCEL</button>
+      </div>
+    </form>
+  }
+
+  <div class="filters">
+    <button [class.active]="filter() === 'ACTIVE'" (click)="filter.set('ACTIVE')">IN PROGRESS</button>
+    <button [class.active]="filter() === 'COMPLETED'" (click)="filter.set('COMPLETED')">COMPLETED</button>
+  </div>
+
+  <div class="goals-grid">
+    @for (goal of visibleGoals(); track goal._id) {
+      <div class="goal-card card-panel" [class.done]="goal.completed" [class.overdue]="isOverdue(goal)">
+        <div class="goal-header">
+          <h3>{{ goal.title }}</h3>
+          <span class="difficulty {{ goal.difficulty }}">{{ goal.difficulty | uppercase }}</span>
+        </div>
+
+        @if (goal.description) {
+          <p class="description">{{ goal.description }}</p>
+        }
+
+        <div class="progress-wrap">
+          <div class="bar"><div class="fill" [style.width.%]="goal.progress"></div></div>
+          <span class="percent">{{ goal.progress }}%</span>
+        </div>
+
+        <ul class="steps">
+          @for (step of goal.steps; track step._id) {
+            <li [class.checked]="step.done">
+              <label>
+                <input type="checkbox" [checked]="step.done" [disabled]="goal.completed" (change)="toggleStep(goal, step._id)">
+                <span>{{ step.title }}</span>
+              </label>
+            </li>
+          }
+        </ul>
+
+        @if (!goal.completed) {
+          <div class="add-step">
+            <input
+              type="text"
+              placeholder="Add another step..."
+              [value]="newStepTitles()[goal._id] || ''"
+              (input)="setNewStepTitle(goal._id, $any($event.target).value)"
+              (keydown.enter)="addStep(goal)">
+            <button class="btn-secondary" (click)="addStep(goal)">ADD</button>
+          </div>
+        }
+
+        <div class="goal-footer">
+          <div class="meta">
+            <span class="reward">XP {{ goal.completed ? '✔' : '+' }}{{ goal.reward.xp }}</span>
+            <span class="reward gold">G {{ goal.completed ? '✔' : '+' }}{{ goal.reward.gold }}</span>
+            @if (goal.deadline) {
+              <span class="deadline" [class.late]="isOverdue(goal)">
+                {{ isOverdue(goal) ? 'OVERDUE: ' : 'DUE: ' }}{{ goal.deadline | date: 'mediumDate' }}
+              </span>
+            }
+          </div>
+          <button class="btn-delete" (click)="deleteGoal(goal)">DELETE</button>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (visibleGoals().length === 0) {
+    <div class="empty-state">
+      <p>{{ filter() === 'ACTIVE' ? 'NO ACTIVE GOALS. CREATE ONE TO BEGIN.' : 'NO COMPLETED GOALS YET.' }}</p>
+    </div>
+  }
+</div>

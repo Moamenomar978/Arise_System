@@ -1,5 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../../../core/services/api.service';
+import { NotificationService } from '../../../core/services/notification.service';
+
+interface AchievementView {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  unlocked: boolean;
+  unlockedAt: string | null;
+}
 
 @Component({
   selector: 'app-achievements',
@@ -8,11 +19,17 @@ import { CommonModule } from '@angular/common';
   templateUrl: './achievements.component.html',
   styleUrl: './achievements.component.scss'
 })
-export class AchievementsComponent {
-  achievements = [
-    { id: '1', title: 'First Blood', description: 'Defeat your first monster', unlocked: true, icon: '⚔️' },
-    { id: '2', title: 'Survivor', description: 'Survive a hidden dungeon', unlocked: true, icon: '🛡️' },
-    { id: '3', title: 'Shadow Monarch', description: 'Extract your first shadow', unlocked: false, icon: '👤' },
-    { id: '4', title: 'S-Rank Hunter', description: 'Reach S-Rank', unlocked: false, icon: '👑' }
-  ];
+export class AchievementsComponent implements OnInit {
+  private api = inject(ApiService);
+  private notifications = inject(NotificationService);
+
+  achievements = signal<AchievementView[]>([]);
+  unlockedCount = computed(() => this.achievements().filter(a => a.unlocked).length);
+
+  ngOnInit() {
+    this.api.get<AchievementView[]>('/achievements').subscribe({
+      next: list => this.achievements.set(list),
+      error: () => this.notifications.showAlert('COULD NOT LOAD ACHIEVEMENTS', 'ERROR')
+    });
+  }
 }

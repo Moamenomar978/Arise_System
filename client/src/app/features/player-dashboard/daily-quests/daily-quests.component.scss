@@ -40,3 +40,18 @@
   font-size: 1.5rem;
   letter-spacing: 2px;
 }
+
+
+.streak-banner {
+  padding: 12px 20px;
+  background: rgba(255, 140, 0, 0.1);
+  border: 1px solid rgba(255, 140, 0, 0.6);
+  border-radius: 6px;
+  color: #ffb74d;
+  font-size: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  strong { font-size: 1.6rem; }
+  .sub { margin-left: 15px; font-size: 0.9rem; color: theme.$arise-text-secondary; font-weight: normal; }
+}
+

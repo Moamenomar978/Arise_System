@@ -18,6 +18,12 @@ export interface AdminQuest {
 
 export type QuestPayload = Omit<AdminQuest, '_id'>;
 
+/** What the server answers after completing a quest or adding progress. */
+export interface QuestResult {
+  completed: boolean;
+  rewards: { xp: number; gold: number; streak: number | null; streakBonusGold: number } | null;
+}
+
 const TYPE_TO_CLIENT: Record<string, QuestType> = {
   daily: 'DAILY',
   weekly: 'WEEKLY',
@@ -74,7 +80,20 @@ export class QuestService {
   }
 
   completeQuest(id: string) {
-    return this.api.post<any>(`/quests/${id}/complete`, {});
+    return this.api.post<QuestResult>(`/quests/${id}/complete`, {});
+  }
+
+  /** Text for the alert shown after a quest is completed. */
+  rewardMessage(res: QuestResult): string {
+    if (!res.completed || !res.rewards) return 'Progress saved';
+    const r = res.rewards;
+    let msg = `QUEST COMPLETED! +${r.xp} XP, +${r.gold} GOLD`;
+    if (r.streak) msg += ` | 🔥 ${r.streak}-day streak`;
+    return msg;
+  }
+
+  addProgress(id: string, amount: number) {
+    return this.api.post<QuestResult>(`/quests/${id}/progress`, { amount });
   }
 
   // ---------------------------------------------------------------- admin

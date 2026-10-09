@@ -7,6 +7,13 @@ export interface PlayerStats {
   availablePoints: number;
 }
 
+export interface InventoryItem {
+  itemId: string;
+  name: string;
+  icon?: string;
+  quantity: number;
+}
+
 export interface Player {
   id: string;
   userId: string;
@@ -20,4 +27,9 @@ export interface Player {
   maxMp: number;
   gold: number;
   stats: PlayerStats;
+  streak: number;
+  bestStreak: number;
+  streakFreezes: number;
+  inPenaltyZone: boolean;
+  inventory: InventoryItem[];
 }

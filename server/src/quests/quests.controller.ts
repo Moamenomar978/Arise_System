@@ -5,6 +5,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { CreateQuestDto } from './dto/create-quest.dto';
 import { UpdateQuestDto } from './dto/update-quest.dto';
+import { AddProgressDto } from './dto/add-progress.dto';
 
 @Controller('quests')
 @UseGuards(JwtAuthGuard)
@@ -20,6 +21,11 @@ export class QuestsController {
   @Post(':id/complete')
   completeQuest(@Request() req, @Param('id') questId: string) {
     return this.questsService.completeQuest(req.user.userId, questId);
+  }
+
+  @Post(':id/progress')
+  addProgress(@Request() req, @Param('id') questId: string, @Body() dto: AddProgressDto) {
+    return this.questsService.addProgress(req.user.userId, questId, dto.amount);
   }
 
   // ----- admin -----

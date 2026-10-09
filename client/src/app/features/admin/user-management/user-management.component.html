@@ -1,34 +1,45 @@
 <div class="admin-panel-container">
   <div class="header">
     <h2 class="admin-glow">USER MANAGEMENT</h2>
-    <button class="btn-action">ADD HUNTER</button>
+    <input
+      class="search"
+      type="text"
+      placeholder="Search name or email..."
+      [value]="search()"
+      (input)="search.set($any($event.target).value)">
   </div>
 
   <div class="table-container card-panel">
     <table class="admin-table">
       <thead>
         <tr>
-          <th>ID</th>
           <th>HUNTER NAME</th>
           <th>EMAIL</th>
           <th>ROLE</th>
-          <th>STATUS</th>
+          <th>LEVEL</th>
+          <th>RANK</th>
+          <th>GOLD</th>
+          <th>JOINED</th>
           <th>ACTIONS</th>
         </tr>
       </thead>
       <tbody>
-        @for (user of users; track user.id) {
+        @for (user of filteredUsers(); track user.id) {
           <tr>
-            <td>#{{ user.id }}</td>
-            <td class="highlight">{{ user.hunterName }}</td>
+            <td class="highlight">{{ user.hunterName }} @if (isMe(user)) { <span class="you">(YOU)</span> }</td>
             <td>{{ user.email }}</td>
             <td><span class="badge" [class.admin]="user.role === 'ADMIN'">{{ user.role }}</span></td>
-            <td><span class="status active">{{ user.status }}</span></td>
+            <td>{{ user.level }}</td>
+            <td>{{ user.rank }}</td>
+            <td>{{ user.gold }}</td>
+            <td>{{ user.createdAt | date: 'mediumDate' }}</td>
             <td class="actions">
-              <button class="btn-edit" (click)="editUser(user.id)">EDIT</button>
-              <button class="btn-ban" (click)="banUser(user.id)">BAN</button>
+              <button class="btn-edit" (click)="resetProgress(user)">RESET</button>
+              <button class="btn-ban" (click)="deleteUser(user)" [disabled]="isMe(user)">DELETE</button>
             </td>
           </tr>
+        } @empty {
+          <tr><td colspan="8" class="empty">NO USERS FOUND</td></tr>
         }
       </tbody>
     </table>

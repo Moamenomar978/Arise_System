@@ -8,6 +8,7 @@
       <a routerLink="overview" routerLinkActive="active" class="nav-item">📊 Overview</a>
       <a routerLink="daily-quests" routerLinkActive="active" class="nav-item">⚔️ Daily Quests</a>
       <a routerLink="quest-board" routerLinkActive="active" class="nav-item">📋 Quest Board</a>
+      <a routerLink="goals" routerLinkActive="active" class="nav-item">🎯 Goals</a>
       <a routerLink="stats" routerLinkActive="active" class="nav-item">📈 Stats</a>
       <a routerLink="achievements" routerLinkActive="active" class="nav-item">🏆 Achievements</a>
       <a routerLink="shop" routerLinkActive="active" class="nav-item">🛒 Shop</a>
@@ -48,6 +49,7 @@
         </div>
         
         <div class="gold-info">
+          <span class="streak-info" title="Daily streak">🔥 {{ player.streak }}</span>
           <span class="gold-icon">💰</span>
           <span class="gold-amount">{{ player.gold }} G</span>
         </div>
@@ -59,3 +61,4 @@
     </div>
   </main>
 </div>
+

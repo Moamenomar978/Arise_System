@@ -3,23 +3,45 @@
     <h2 class="admin-glow">SYSTEM ANALYTICS</h2>
   </div>
 
-  <div class="stats-overview">
-    <div class="stat-card card-panel">
-      <h3>TOTAL HUNTERS</h3>
-      <div class="value highlight">1,245</div>
+  @if (stats(); as s) {
+    <div class="stats-overview">
+      <div class="stat-card card-panel">
+        <h3>TOTAL HUNTERS</h3>
+        <div class="value highlight">{{ s.totalUsers }}</div>
+      </div>
+      <div class="stat-card card-panel">
+        <h3>QUESTS COMPLETED</h3>
+        <div class="value">{{ s.totalCompletions }}</div>
+      </div>
+      <div class="stat-card card-panel">
+        <h3>AWAKENED THIS WEEK</h3>
+        <div class="value">{{ newThisWeek() }}</div>
+      </div>
+      <div class="stat-card card-panel">
+        <h3>GOALS COMPLETED</h3>
+        <div class="value">{{ s.goalsCompleted }} <small>/ {{ s.totalGoals }}</small></div>
+      </div>
+      <div class="stat-card card-panel">
+        <h3>IN PENALTY ZONE</h3>
+        <div class="value danger">{{ s.inPenaltyZone }}</div>
+      </div>
+      <div class="stat-card card-panel">
+        <h3>AVERAGE LEVEL</h3>
+        <div class="value">{{ s.averageLevel }}</div>
+      </div>
     </div>
-    <div class="stat-card card-panel">
-      <h3>QUESTS COMPLETED</h3>
-      <div class="value">8,932</div>
-    </div>
-    <div class="stat-card card-panel">
-      <h3>AWAKENED THIS WEEK</h3>
-      <div class="value">15</div>
-    </div>
-  </div>
+  } @else {
+    <p class="loading">LOADING...</p>
+  }
 
-  <div class="chart-container card-panel">
-    <h3>SYSTEM GROWTH</h3>
-    <canvas #growthChart></canvas>
+  <div class="charts-row">
+    <div class="chart-container card-panel">
+      <h3>LAST 7 DAYS</h3>
+      <canvas #growthChart></canvas>
+    </div>
+    <div class="chart-container card-panel">
+      <h3>RANK DISTRIBUTION</h3>
+      <canvas #rankChart></canvas>
+    </div>
   </div>
 </div>

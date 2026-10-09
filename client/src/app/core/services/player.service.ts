@@ -43,7 +43,12 @@ export class PlayerService {
         vitality: stats.vitality ?? 1,
         intelligence: stats.intelligence ?? 1,
         availablePoints: p.statPoints ?? 0
-      }
+      },
+      streak: p.streak ?? 0,
+      bestStreak: p.bestStreak ?? 0,
+      streakFreezes: p.streakFreezes ?? 0,
+      inPenaltyZone: !!p.inPenaltyZone,
+      inventory: p.inventory ?? []
     };
   }
 

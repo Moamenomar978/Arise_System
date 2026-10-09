@@ -36,12 +36,29 @@ export class AuthService {
 
   async login(user: any) {
     const obj = typeof user.toObject === 'function' ? user.toObject() : user;
-    const payload = { email: obj.email, sub: String(obj._id), role: obj.role };
+    const base = { email: obj.email, sub: String(obj._id), role: obj.role };
     return {
-      accessToken: this.jwtService.sign(payload, { expiresIn: '15m' }),
-      refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' }),
+      // `typ` stops a refresh token from being used as an access token
+      accessToken: this.jwtService.sign({ ...base, typ: 'access' }, { expiresIn: '15m' }),
+      refreshToken: this.jwtService.sign({ ...base, typ: 'refresh' }, { expiresIn: '7d' }),
       user: this.toClientUser(obj),
     };
+  }
+
+  /** Swaps a valid refresh token for a fresh pair of tokens. */
+  async refresh(refreshToken: string) {
+    let payload: any;
+    try {
+      payload = await this.jwtService.verifyAsync(refreshToken);
+    } catch {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+    if (payload.typ !== 'refresh') throw new UnauthorizedException('Invalid refresh token');
+
+    // Reload the user so deleted accounts and role changes are respected
+    const user = await this.usersService.findById(payload.sub);
+    if (!user) throw new UnauthorizedException('User no longer exists');
+    return this.login(user);
   }
 
   async register(registerDto: RegisterDto) {

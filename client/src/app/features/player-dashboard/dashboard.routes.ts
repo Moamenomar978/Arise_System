@@ -5,6 +5,7 @@ export const DASHBOARD_ROUTES: Routes = [
   { path: 'overview', loadComponent: () => import('./overview/overview.component').then(m => m.OverviewComponent) },
   { path: 'daily-quests', loadComponent: () => import('./daily-quests/daily-quests.component').then(m => m.DailyQuestsComponent) },
   { path: 'quest-board', loadComponent: () => import('./quest-board/quest-board.component').then(m => m.QuestBoardComponent) },
+  { path: 'goals', loadComponent: () => import('./goals/goals.component').then(m => m.GoalsComponent) },
   { path: 'stats', loadComponent: () => import('./stat-allocation/stat-allocation.component').then(m => m.StatAllocationComponent) },
   { path: 'achievements', loadComponent: () => import('./achievements/achievements.component').then(m => m.AchievementsComponent) },
   { path: 'shop', loadComponent: () => import('./shop/shop.component').then(m => m.ShopComponent) }

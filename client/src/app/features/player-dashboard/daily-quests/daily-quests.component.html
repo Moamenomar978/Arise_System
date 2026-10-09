@@ -7,9 +7,16 @@
     </div>
   </div>
 
+  @if (playerService.player(); as player) {
+    <div class="streak-banner">
+      🔥 STREAK: <strong>{{ player.streak }}</strong> DAY{{ player.streak === 1 ? '' : 'S' }}
+      <span class="sub">BEST: {{ player.bestStreak }} · FREEZES: {{ player.streakFreezes }}</span>
+    </div>
+  }
+
   <div class="quests-grid">
     @for (quest of questService.dailyQuests(); track quest.id) {
-      <app-quest-card [quest]="quest" (complete)="onQuestComplete($event)"></app-quest-card>
+      <app-quest-card [quest]="quest" (complete)="onQuestComplete($event)" (progress)="onQuestProgress($event)"></app-quest-card>
     }
   </div>
   

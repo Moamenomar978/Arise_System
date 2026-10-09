@@ -13,12 +13,25 @@
   h1 { color: theme.$arise-red; font-size: 2.5rem; text-shadow: 0 0 10px theme.$arise-red; margin-bottom: 10px; }
   h2 { color: #fff; margin-bottom: 20px; }
   p { color: theme.$arise-text-secondary; font-size: 1.1rem; }
+  .hint { font-size: 0.95rem; }
+  .done { color: #4caf50; font-weight: bold; letter-spacing: 2px; }
+
+  .timer {
+    margin: 25px 0 10px; font-size: 3.5rem; font-weight: bold; letter-spacing: 4px;
+    color: theme.$arise-red; text-shadow: 0 0 12px theme.$arise-red;
+  }
   
   .btn-survive {
     margin-top: 30px; width: 100%; padding: 15px; background: rgba(255,23,68,0.1);
     border: 2px solid theme.$arise-red; color: theme.$arise-red; font-family: 'Rajdhani', sans-serif;
     font-size: 1.5rem; font-weight: bold; cursor: pointer; transition: all 0.3s;
     &:hover { background: rgba(255,23,68,0.3); box-shadow: 0 0 15px theme.$arise-red; }
+  }
+
+  &.safe {
+    border-color: theme.$arise-electric-blue;
+    box-shadow: 0 0 20px rgba(0,212,255,0.4);
+    .btn-survive { border-color: theme.$arise-electric-blue; color: theme.$arise-electric-blue; }
   }
 }
 

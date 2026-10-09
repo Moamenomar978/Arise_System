@@ -1,13 +1,17 @@
 <div class="achievements-container">
   <h2 class="system-text-glow">ACHIEVEMENTS</h2>
-  
+  <p class="summary">{{ unlockedCount() }} / {{ achievements().length }} UNLOCKED</p>
+
   <div class="grid">
-    @for (ach of achievements; track ach.id) {
+    @for (ach of achievements(); track ach.id) {
       <div class="achievement-card card-panel" [class.locked]="!ach.unlocked">
         <div class="icon">{{ ach.icon }}</div>
         <div class="details">
           <h3>{{ ach.title }}</h3>
           <p>{{ ach.description }}</p>
+          @if (ach.unlocked && ach.unlockedAt) {
+            <span class="date">Unlocked {{ ach.unlockedAt | date: 'mediumDate' }}</span>
+          }
         </div>
       </div>
     }

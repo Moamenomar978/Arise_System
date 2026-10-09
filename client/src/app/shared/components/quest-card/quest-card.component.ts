@@ -13,8 +13,19 @@ import { RankBadgeComponent } from '../rank-badge/rank-badge.component';
 export class QuestCardComponent {
   @Input() quest!: Quest;
   @Output() complete = new EventEmitter<string>();
+  @Output() progress = new EventEmitter<{ id: string; amount: number }>();
 
   onComplete() {
     this.complete.emit(this.quest.id);
+  }
+
+  onAddProgress(value: string) {
+    const amount = Math.floor(Number(value));
+    if (!amount || amount < 1) return;
+    this.progress.emit({ id: this.quest.id, amount });
+  }
+
+  percent(obj: { current: number; target: number }) {
+    return obj.target ? Math.min(100, Math.round((obj.current / obj.target) * 100)) : 0;
   }
 }

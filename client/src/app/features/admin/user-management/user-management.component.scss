@@ -3,28 +3,34 @@
 .admin-panel-container { display: flex; flex-direction: column; gap: 20px; }
 
 .header {
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap;
   .admin-glow { color: theme.$arise-gold; text-shadow: 0 0 10px theme.$arise-gold; margin: 0; }
-  .btn-action { padding: 10px 20px; background: rgba(255,215,0,0.1); border: 1px solid theme.$arise-gold; color: theme.$arise-gold; font-family: 'Rajdhani', sans-serif; font-weight: bold; cursor: pointer; transition: all 0.3s; &:hover { background: rgba(255,215,0,0.3); } }
+  .search {
+    padding: 10px; min-width: 260px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,215,0,0.3);
+    color: theme.$arise-text; font-family: 'Rajdhani', sans-serif; font-size: 1rem; border-radius: 4px;
+    &:focus { outline: none; border-color: theme.$arise-gold; }
+  }
 }
 
-.table-container { padding: 0; overflow: hidden; border-color: rgba(255,215,0,0.3); }
+.table-container { padding: 0; overflow-x: auto; border-color: rgba(255,215,0,0.3); }
 
 .admin-table {
   width: 100%; border-collapse: collapse; text-align: left;
   th { background: rgba(0,0,0,0.5); color: theme.$arise-gold; padding: 15px; font-weight: bold; }
   td { padding: 15px; border-bottom: 1px solid rgba(255,215,0,0.1); color: theme.$arise-text; }
   tbody tr:hover { background: rgba(255,215,0,0.05); }
-  
+
   .highlight { color: theme.$arise-electric-blue; font-weight: bold; }
+  .you { color: theme.$arise-gold; font-size: 0.8rem; }
+  .empty { text-align: center; color: theme.$arise-text-secondary; letter-spacing: 2px; }
   .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; background: rgba(255,255,255,0.1); }
   .badge.admin { background: theme.$arise-gold; color: #000; font-weight: bold; }
-  .status.active { color: #4caf50; }
-  
+
   .actions {
     display: flex; gap: 10px;
     button { padding: 5px 10px; font-family: 'Rajdhani', sans-serif; font-weight: bold; cursor: pointer; background: transparent; border-radius: 4px; }
+    button:disabled { opacity: 0.3; cursor: not-allowed; }
     .btn-edit { border: 1px solid theme.$arise-electric-blue; color: theme.$arise-electric-blue; &:hover { background: rgba(0,212,255,0.2); } }
-    .btn-ban { border: 1px solid theme.$arise-red; color: theme.$arise-red; &:hover { background: rgba(255,23,68,0.2); } }
+    .btn-ban { border: 1px solid theme.$arise-red; color: theme.$arise-red; &:hover:not(:disabled) { background: rgba(255,23,68,0.2); } }
   }
 }

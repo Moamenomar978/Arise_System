@@ -7,6 +7,7 @@ import { QuestProgress, QuestProgressSchema } from './schemas/quest-progress.sch
 import { PlayersModule } from '../players/players.module';
 import { UsersModule } from '../users/users.module';
 import { NotificationsModule } from '../notifications/notifications.module';
+import { AchievementsModule } from '../achievements/achievements.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { NotificationsModule } from '../notifications/notifications.module';
     forwardRef(() => PlayersModule),
     forwardRef(() => UsersModule),
     forwardRef(() => NotificationsModule),
+    AchievementsModule,
   ],
   controllers: [QuestsController],
   providers: [QuestsService],

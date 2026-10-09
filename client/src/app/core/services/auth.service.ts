@@ -1,7 +1,7 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { User, AuthResponse } from '../models/user.model';
 import { ApiService } from './api.service';
-import { tap } from 'rxjs';
+import { Observable, finalize, shareReplay, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -12,9 +12,12 @@ export class AuthService {
   private router = inject(Router);
 
   currentUser = signal<User | null>(null);
-  
+
   isAuthenticated = computed(() => !!this.currentUser());
   isAdmin = computed(() => this.currentUser()?.role === 'ADMIN');
+
+  // While a refresh is running, every request that needs one shares it
+  private refreshInFlight$: Observable<AuthResponse> | null = null;
 
   constructor() {
     const savedUser = localStorage.getItem('arise_user');
@@ -33,6 +36,22 @@ export class AuthService {
     return this.api.post<AuthResponse>('/auth/register', data).pipe(
       tap(res => this.setAuth(res))
     );
+  }
+
+  /** Trades the refresh token for a new access token (the access token lasts 15 minutes). */
+  refresh(): Observable<AuthResponse> {
+    if (!this.refreshInFlight$) {
+      const refreshToken = localStorage.getItem('arise_refresh_token');
+      if (!refreshToken) {
+        return throwError(() => new Error('No refresh token'));
+      }
+      this.refreshInFlight$ = this.api.post<AuthResponse>('/auth/refresh', { refreshToken }).pipe(
+        tap(res => this.setAuth(res)),
+        finalize(() => (this.refreshInFlight$ = null)),
+        shareReplay(1)
+      );
+    }
+    return this.refreshInFlight$;
   }
 
   logout() {

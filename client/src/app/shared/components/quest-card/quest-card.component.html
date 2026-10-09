@@ -18,6 +18,11 @@
             <span>{{ obj.description }}</span>
             <span class="progress">[{{ obj.current }} / {{ obj.target }}]</span>
           </li>
+          @if (obj.target > 1) {
+            <li class="bar-row">
+              <div class="bar"><div class="fill" [style.width.%]="percent(obj)"></div></div>
+            </li>
+          }
         }
       </ul>
     </div>
@@ -34,7 +39,15 @@
     </div>
   </div>
 
-  <div class="quest-actions" *ngIf="quest.status !== 'COMPLETED'">
-    <button class="btn-complete" (click)="onComplete()">COMPLETE QUEST</button>
-  </div>
+  @if (quest.status !== 'COMPLETED') {
+    <div class="quest-actions">
+      @if (quest.objectives[0] && quest.objectives[0].target > 1) {
+        <div class="add-progress">
+          <input #amt type="number" min="1" value="1" aria-label="Amount done">
+          <button class="btn-add" (click)="onAddProgress(amt.value)">+ ADD PROGRESS</button>
+        </div>
+      }
+      <button class="btn-complete" (click)="onComplete()">COMPLETE QUEST</button>
+    </div>
+  }
 </div>

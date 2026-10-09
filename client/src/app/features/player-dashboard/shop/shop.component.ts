@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayerService } from '../../../core/services/player.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { ShopItem, ShopService } from '../../../core/services/shop.service';
 
 @Component({
   selector: 'app-shop',
@@ -10,24 +11,29 @@ import { NotificationService } from '../../../core/services/notification.service
   templateUrl: './shop.component.html',
   styleUrl: './shop.component.scss'
 })
-export class ShopComponent {
+export class ShopComponent implements OnInit {
   playerService = inject(PlayerService);
+  shopService = inject(ShopService);
   notificationService = inject(NotificationService);
 
-  items = [
-    { id: '1', name: 'Health Potion', desc: 'Restores 500 HP', price: 100, icon: '💊' },
-    { id: '2', name: 'Mana Potion', desc: 'Restores 300 MP', price: 150, icon: '🧪' },
-    { id: '3', name: 'Return Stone', desc: 'Escape any dungeon', price: 1000, icon: '💎' },
-    { id: '4', name: "Knight's Sword", desc: '+20 Strength', price: 5000, icon: '🗡️' }
-  ];
+  ngOnInit() {
+    this.shopService.loadItems().subscribe({
+      error: () => this.notificationService.showAlert('COULD NOT LOAD THE SHOP', 'ERROR')
+    });
+    this.playerService.loadPlayer().subscribe();
+  }
 
-  buyItem(item: any) {
-    const player = this.playerService.player();
-    if (player && player.gold >= item.price) {
-      this.notificationService.showAlert(`Purchased ${item.name}`, 'SUCCESS');
-      // Typically would call api.post('/shop/buy') here
-    } else {
-      this.notificationService.showAlert('Not enough gold', 'ERROR');
-    }
+  buyItem(item: ShopItem) {
+    this.shopService.purchase(item._id).subscribe({
+      next: () => {
+        this.notificationService.showAlert(`Purchased ${item.name}`, 'SUCCESS');
+        // refresh gold, HP, streak freezes and the inventory
+        this.playerService.loadPlayer().subscribe();
+      },
+      error: err => {
+        const msg = err?.error?.message;
+        this.notificationService.showAlert(Array.isArray(msg) ? msg.join(', ') : msg || 'PURCHASE FAILED', 'ERROR');
+      }
+    });
   }
 }

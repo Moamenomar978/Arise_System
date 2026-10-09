@@ -1,10 +1,28 @@
 <div class="penalty-container">
-  <div class="warning-box system-border-glow">
-    <h1 class="blink">[SYSTEM WARNING]</h1>
-    <h2>PENALTY ZONE ACTIVATED</h2>
-    <p>You have failed to complete the daily quest in time.</p>
-    <p>Survive for 4 hours against Giant Desert Centipedes.</p>
-    
-    <button class="btn-survive" (click)="survive()">ENTER PENALTY ZONE</button>
-  </div>
+  @if (loading()) {
+    <div class="warning-box system-border-glow"><p>LOADING...</p></div>
+  } @else if (!status()?.inPenaltyZone) {
+    <div class="warning-box safe system-border-glow">
+      <h2>NO ACTIVE PENALTY</h2>
+      <p>You are not in the Penalty Zone. Keep completing your daily quests.</p>
+      <button class="btn-survive" (click)="back()">BACK TO DASHBOARD</button>
+    </div>
+  } @else {
+    <div class="warning-box system-border-glow">
+      <h1 class="blink">[SYSTEM WARNING]</h1>
+      <h2>PENALTY ZONE ACTIVATED</h2>
+      <p>Your HP reached 0 after you failed to complete your daily quests.</p>
+      <p>Survive for {{ status()!.durationMinutes }} minutes to return. Quests are locked until then.</p>
+
+      @if (!started()) {
+        <button class="btn-survive" (click)="enter()">ENTER PENALTY ZONE</button>
+      } @else if (!finished()) {
+        <div class="timer">{{ timeLeft() }}</div>
+        <p class="hint">Stay focused. Come back when the timer reaches zero.</p>
+      } @else {
+        <p class="done">THE PENALTY IS OVER.</p>
+        <button class="btn-survive" (click)="survive()">LEAVE THE PENALTY ZONE</button>
+      }
+    </div>
+  }
 </div>

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
 import { Quest, QuestDocument } from './schemas/quest.schema';
@@ -9,6 +9,7 @@ import { SEED_QUESTS } from './quests.seed';
 import { PlayersService } from '../players/players.service';
 import { UsersService } from '../users/users.service';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
+import { AchievementsService } from '../achievements/achievements.service';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -51,6 +52,7 @@ export class QuestsService implements OnModuleInit {
     private playersService: PlayersService,
     private usersService: UsersService,
     private notificationsGateway: NotificationsGateway,
+    private achievementsService: AchievementsService,
   ) {}
 
   /** Insert the ready-made quests the first time the app runs. */
@@ -113,10 +115,41 @@ export class QuestsService implements OnModuleInit {
     });
   }
 
+  /** Adds progress (e.g. +20 push-ups). Reaching the target completes the quest. */
+  async addProgress(userId: string, questId: string, amount: number) {
+    this.assertId(questId);
+    const quest = await this.questModel.findById(questId);
+    if (!quest || quest.isActive === false) throw new NotFoundException('Quest not found');
+    await this.assertNotInPenaltyZone(userId);
+
+    const periodKey = periodKeyFor(quest.type);
+    const current = await this.progressModel.findOne({ userId, questId, periodKey });
+    if (current?.completed) return { completed: true, progress: current, rewards: null };
+
+    const newAmount = Math.min(quest.targetAmount, (current?.currentAmount ?? 0) + amount);
+    if (newAmount >= quest.targetAmount) return this.completeQuest(userId, questId);
+
+    try {
+      const progress = await this.progressModel.findOneAndUpdate(
+        { userId, questId, periodKey, completed: { $ne: true } },
+        { $set: { currentAmount: newAmount } },
+        { upsert: true, new: true },
+      );
+      return { completed: false, progress, rewards: null };
+    } catch (e: any) {
+      if (e?.code === 11000) {
+        const progress = await this.progressModel.findOne({ userId, questId, periodKey });
+        return { completed: !!progress?.completed, progress, rewards: null };
+      }
+      throw e;
+    }
+  }
+
   async completeQuest(userId: string, questId: string) {
     this.assertId(questId);
     const quest = await this.questModel.findById(questId);
     if (!quest || quest.isActive === false) throw new NotFoundException('Quest not found');
+    await this.assertNotInPenaltyZone(userId);
 
     const periodKey = periodKeyFor(quest.type);
 
@@ -131,7 +164,8 @@ export class QuestsService implements OnModuleInit {
       );
     } catch (e: any) {
       if (e?.code === 11000) {
-        return this.progressModel.findOne({ userId, questId, periodKey });
+        const existing = await this.progressModel.findOne({ userId, questId, periodKey });
+        return { completed: true, progress: existing, rewards: null };
       }
       throw e;
     }
@@ -141,13 +175,37 @@ export class QuestsService implements OnModuleInit {
     player.gold += quest.rewardGold;
     await player.save();
 
+    // Daily quests extend the streak
+    let streak: { streak: number; bonusGold: number; isNewDay: boolean } | null = null;
+    if (quest.type === 'daily') {
+      streak = await this.playersService.registerDailyActivity(userId);
+    }
+
     this.notificationsGateway.sendToUser(userId, 'quest.completed', {
       questTitle: quest.title,
       rewardXp: quest.rewardXp,
       rewardGold: quest.rewardGold,
     });
 
-    return progress;
+    await this.achievementsService.evaluate(userId);
+
+    return {
+      completed: true,
+      progress,
+      rewards: {
+        xp: quest.rewardXp,
+        gold: quest.rewardGold,
+        streak: streak?.streak ?? null,
+        streakBonusGold: streak?.bonusGold ?? 0,
+      },
+    };
+  }
+
+  private async assertNotInPenaltyZone(userId: string) {
+    const player = await this.playersService.findByUserId(userId);
+    if (player.inPenaltyZone) {
+      throw new ForbiddenException('You are in the Penalty Zone. Clear it before doing quests.');
+    }
   }
 
   private assertId(id: string) {

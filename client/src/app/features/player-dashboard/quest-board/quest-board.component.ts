@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { QuestService } from '../../../core/services/quest.service';
+import { QuestResult, QuestService } from '../../../core/services/quest.service';
+import { PlayerService } from '../../../core/services/player.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { QuestCardComponent } from '../../../shared/components/quest-card/quest-card.component';
 
@@ -13,6 +14,7 @@ import { QuestCardComponent } from '../../../shared/components/quest-card/quest-
 })
 export class QuestBoardComponent implements OnInit {
   questService = inject(QuestService);
+  playerService = inject(PlayerService);
   notificationService = inject(NotificationService);
   activeFilter = 'ALL';
 
@@ -29,12 +31,27 @@ export class QuestBoardComponent implements OnInit {
     return this.questService.availableQuests().filter(q => q.type === this.activeFilter);
   }
 
+  private handleResult(res: QuestResult) {
+    this.notificationService.showAlert(this.questService.rewardMessage(res), res.completed ? 'SUCCESS' : 'INFO');
+    this.questService.loadAvailableQuests().subscribe();
+    this.playerService.loadPlayer().subscribe();
+  }
+
+  private handleError(err: any) {
+    this.notificationService.showAlert(err?.error?.message || 'COULD NOT UPDATE QUEST', 'ERROR');
+  }
+
   onQuestComplete(id: string) {
     this.questService.completeQuest(id).subscribe({
-      next: (res) => {
-        this.notificationService.showAlert(`Quest Completed!`, 'SUCCESS');
-        this.questService.loadAvailableQuests().subscribe();
-      }
+      next: res => this.handleResult(res),
+      error: err => this.handleError(err)
+    });
+  }
+
+  onQuestProgress(e: { id: string; amount: number }) {
+    this.questService.addProgress(e.id, e.amount).subscribe({
+      next: res => this.handleResult(res),
+      error: err => this.handleError(err)
     });
   }
 }
